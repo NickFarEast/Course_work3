@@ -1,5 +1,6 @@
 from .base import BaseMixin
 from project.setup_db import db
+from ...tools.security import get_hash_password
 
 
 class User(BaseMixin, db.Model):
@@ -13,3 +14,9 @@ class User(BaseMixin, db.Model):
 
     def __repr__(self):
         return f"<User '{self.name.title()}'>"
+
+
+
+    def compare_password(self, other_password) -> bool:
+        hashed_password = get_hash_password(other_password)
+        return hashed_password == self.password
