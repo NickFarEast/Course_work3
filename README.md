@@ -22,7 +22,7 @@ python load_fixture
 ### Bash (Linux/MACOS)
 ```shell
 export FLASK_APP=run.py
-export FLASK_ENV='development'
+export FLqASK_ENV='development'
 flask run
 ```
 

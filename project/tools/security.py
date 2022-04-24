@@ -6,6 +6,8 @@ from flask import current_app, request, abort
 from datetime import datetime, timedelta
 from typing import Dict
 
+from project.exceptions import ItemNotFound
+
 
 def get_hash_password(password: str) -> str:
     return base64.b64encode(hashlib.pbkdf2_hmac(
@@ -55,13 +57,13 @@ def decode_token(token: str, refresh_token=False):
         decoded_token = jwt.decode(
             jwt=token,
             key=current_app.config["SECRET_KEY"],
-            algorithm=current_app.config["JWT_ALGORITHM"])
+            algorithms=current_app.config["JWT_ALGORITHM"])
     except jwt.PyJWTError:
         current_app.logger.info('Got wrong token:"%s"', token)
         abort(401)
 
     if decoded_token['refresh_token'] != refresh_token:
-        abort(400, message='Got wrong token type.')
+        abort(400, 'Got wrong token type.')
 
     return decoded_token
 
@@ -86,3 +88,34 @@ def admin_access_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def compare_password(other_password, password_hash):
+    hashed_password = get_hash_password(other_password)
+    return hashed_password == password_hash
+
+
+def login_user(req_json, user):
+    user_email = req_json.get("email")
+    user_pass = req_json.get("password")
+    if user_email and user_pass:
+        pass_hashed = user["password"]
+        req_json["role"] = user["role"]
+        req_json["id"] = user["id"]
+        if compare_password(password_hash=pass_hashed, other_password=user_pass):
+            return generate_tokens(req_json)
+    raise ItemNotFound
+
+
+def refresh_user_token(req_json):
+    refresh_token = req_json.get("refresh_token")
+    data = decode_token(refresh_token)
+    if data:
+        tokens = generate_tokens(data)
+        return tokens
+    raise ItemNotFound
+
+def auth_check():
+    token = get_token_from_headers(request.headers)
+    return decode_token(token)
+
