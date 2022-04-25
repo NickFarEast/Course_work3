@@ -7,15 +7,15 @@ from project.tools.security import auth_required
 
 users_ns = Namespace("users")
 parser = reqparse.RequestParser()
-parser.add_argument('page', type=int)
+parser.add_argument('page', type=int, help="Номер страницы")
 
 
 @users_ns.route("/")
 class UsersView(Resource):
     @users_ns.expect(parser)
     @auth_required
-    @users_ns.response(200, "OK")
     def get(self):
+        """Get all users"""
         page = parser.parse_args().get("page")
         if page:
             return UserService(db.session).get_limit_users(page)
@@ -24,16 +24,21 @@ class UsersView(Resource):
 
 @users_ns.route("/<int:uid>")
 class UserView(Resource):
+    @users_ns.doc(params={"uid": "ID пользователя"})
+    @users_ns.response(404, "User not found")
     @auth_required
-    @users_ns.response(200, "OK")
-    @users_ns.response(400, "User not found")
     def get(self, uid: int):
+        """Get user by id"""
         try:
             return UserService(db.session).get_item_by_id(uid)
         except ItemNotFound:
             abort(404, message="User not found")
 
+    @users_ns.response(400, "Bad Request")
+    @users_ns.response(404, "User not found")
+    @auth_required
     def patch(self, uid: int):
+        """ Patching user's information"""
         req_json = request.json
         if not req_json:
             abort(400, message="Bad Request")
@@ -46,10 +51,12 @@ class UserView(Resource):
 
 @users_ns.route("/password/<int:uid>")
 class UserPatchView(Resource):
-    @auth_required
-    @users_ns.response(200, "OK")
+    @users_ns.doc(params={"uid": "ID пользователя"})
+    @users_ns.response(400, "Bad Request")
     @users_ns.response(404, "User not found")
+    @auth_required
     def put(self, uid: int):
+        """Patching user's password"""
         req_json = request.json
         if not req_json:
             abort(400, message="Bad Request")

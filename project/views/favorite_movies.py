@@ -12,8 +12,9 @@ parser.add_argument('status', type=str)
 
 @favorite_movie_ns.route("/")
 class FavoriteMoviesView(Resource):
+    @favorite_movie_ns.response(200, "OK")
+    @favorite_movie_ns.response(404, "Movie not found")
     @auth_required
-    @favorite_movie_ns.response(200,"OK")
     def get(self):
         """Get all favorite movies"""
         uid = auth_check().get("id")
@@ -23,18 +24,21 @@ class FavoriteMoviesView(Resource):
             abort(404, messages="Movie not Found")
 
 
-
 @favorite_movie_ns.route("/<int:mid>")
 class FavoriteMoviesView(Resource):
+
+    @favorite_movie_ns.response(200, "OK")
+    @favorite_movie_ns.response(404, "Movie not found")
     @auth_required
-    @favorite_movie_ns.response(200,"OK")
-    @favorite_movie_ns.response(404,"Movie not found")
-    def post(self, mid:int):
+    def post(self, mid: int):
         """Add favorite movie"""
         uid = auth_check().get("id")
         return FavoriteMovieService(db.session).create(mid=mid, uid=uid)
 
-    def delete(self, mid:int):
-        """Add favorite movie"""
+    @favorite_movie_ns.response(200, "OK")
+    @favorite_movie_ns.response(404, "Movie not found")
+    @auth_required
+    def delete(self, mid: int):
+        """Delete favorite movie"""
         uid = auth_check().get("id")
         return FavoriteMovieService(db.session).delete(mid=mid, uid=uid)

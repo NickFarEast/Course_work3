@@ -12,8 +12,11 @@ auth_ns = Namespace('auth')
 
 @auth_ns.route('/login')
 class AuthView(Resource):
-
+    @auth_ns.response(200, "Success")
+    @auth_ns.response(400, "Bad Request")
+    @auth_ns.response(401, "Authorization Error")
     def post(self):
+        """User's authorization """
         req_json = request.json
         if not req_json:
             abort(400, message="Bad Request")
@@ -25,7 +28,11 @@ class AuthView(Resource):
         except ItemNotFound:
             abort(401, message="Authorization Error")
 
+    @auth_ns.response(200, "Success")
+    @auth_ns.response(400, "Bad Request")
+    @auth_ns.response(401, "Authorization Error")
     def put(self):
+        """Refresh token"""
         req_json = request.json
         if not req_json:
             abort(400, message="Bad Request")
@@ -38,8 +45,11 @@ class AuthView(Resource):
 
 @auth_ns.route('/register')
 class AuthRegisterView(Resource):
+    @auth_ns.response(200, "Success")
+    @auth_ns.response(400, "Bad Request")
     def post(self):
+        """New user's registration"""
         req_json = request.json
         if not req_json:
             abort(400, message="Bad Request")
-        return UserService(db.session).create(req_json)
+        return UserService(db.session).create(req_json), 200

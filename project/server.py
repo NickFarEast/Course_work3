@@ -6,13 +6,15 @@ from project.setup_db import db
 from project.views import genres_ns, directors_ns, users_ns, auth_ns, favorite_movie_ns
 from project.views.movies import movies_ns
 
-api = Api(
+
+
+api = Api()
     # authorizations={
     #     "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
     # },
     # title="Flask Course Project 3",
-    # doc="/docs",
-)
+
+
 
 # Нужно для работы с фронтендом
 cors = CORS()
