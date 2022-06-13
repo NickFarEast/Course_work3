@@ -1,8 +1,6 @@
 import base64
 import os
-
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-
+DATABASE_FILE_PATH = os.path.join(os.getcwd(), 'project.db')
 
 class BaseConfig:
     SECRET_KEY = "you-will-never-guess"
@@ -29,6 +27,4 @@ class TestingConfig(BaseConfig):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
-        os.path.dirname(BASEDIR), "project.db"
-    )
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_FILE_PATH}'
