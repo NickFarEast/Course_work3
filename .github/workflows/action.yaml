@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: clone code
-        uses: action/checkout@v2
+        uses: actions/checkout@v2
       - name: docker build
         run: docker build -t nickfareast/hw_26:$GITHUB_REF_NAME-$GITHUB_RUN _ID .
 
