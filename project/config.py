@@ -1,6 +1,8 @@
 import base64
 import os
-DATABASE_FILE_PATH = os.path.join(os.getcwd(), 'project.db')
+
+DATABASE_FILE_PATH = os.path.join(os.path.join(os.getcwd(), 'db_base'), 'project.db')
+
 
 class BaseConfig:
     SECRET_KEY = "you-will-never-guess"

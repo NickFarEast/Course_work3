@@ -6,4 +6,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./sql_data:/var/lib/docker/volumes
+      - ./db_base:/var/lib/docker/volumes
