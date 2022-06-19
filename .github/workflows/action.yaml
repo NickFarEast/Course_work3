@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir Course_work3
           cat docker-compose-ci.yaml | envsubst > Course_work3/docker-compose.yaml
-      - name: copy file tio server
+      - name: copy file to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}

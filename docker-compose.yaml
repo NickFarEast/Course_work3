@@ -8,4 +8,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - home/nicks/data:/code/db_base
+      - ./db_base/project.db:/code/db_base
