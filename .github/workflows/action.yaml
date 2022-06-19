@@ -19,13 +19,13 @@ jobs:
       - name: clone code
         uses: actions/checkout@v2
       - name: render config
-        run: cat docker_compose-ci.yaml | envsubst > deploy/docker-compose.yaml
+        run: cat docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
       - name: copy file tio server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          source: "deploy/docker-compose.yaml"
+          source: "Course_work3/docker-compose.yaml"
           target: "flask_app_ci"
           strip_components: 1
