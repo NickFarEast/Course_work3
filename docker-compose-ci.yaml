@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  api:
+    image: nickfareast/hw_26:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    ports:
+      - 80:80
+    volumes:
+      - ./sql_data:/var/lib/docker/volumes
