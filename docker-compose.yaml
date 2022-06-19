@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+    image: nickfareast/hw_26
+    ports:
+      - 80:80
+    volumes:
+      - ./sql_data:/var/lib/docker/volumes
