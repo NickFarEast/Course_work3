@@ -6,4 +6,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - /home/nicks/flask_app_ci:/code/db_base
+      - /home/nicks/flask_app_ci:/code/Course_work3/db_base
