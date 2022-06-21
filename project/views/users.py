@@ -12,8 +12,8 @@ parser.add_argument('page', type=int, help="Номер страницы")
 
 @users_ns.route("/")
 class UsersView(Resource):
-    @users_ns.expect(parser)
-    @auth_required
+    # @users_ns.expect(parser)
+
     def get(self):
         """Get all users"""
         page = parser.parse_args().get("page")
