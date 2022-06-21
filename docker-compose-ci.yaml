@@ -6,4 +6,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - /home/nicks/data:/code/Course_work3/db_base
+      - /home/nicks/data:/code/db_base
